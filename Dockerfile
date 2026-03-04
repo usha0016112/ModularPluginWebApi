@@ -2,12 +2,13 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-COPY *.sln .
-COPY ModularPluginWebApi/*.csproj ./ModularPluginWebApi/
-COPY Plugin.Abstractions/*.csproj ./Plugin.Abstractions/
-COPY SamplePlugin/*.csproj ./SamplePlugin/
+COPY ModularPluginWebApi.sln .
 
-RUN dotnet restore
+COPY ModularPluginWebApi/ModularPluginWebApi.csproj ModularPluginWebApi/
+COPY Plugin.Abstractions/Plugin.Abstractions.csproj Plugin.Abstractions/
+COPY SamplePlugin/SamplePlugin.csproj SamplePlugin/
+
+RUN dotnet restore ModularPluginWebApi.sln
 
 COPY . .
 RUN dotnet publish ModularPluginWebApi/ModularPluginWebApi.csproj -c Release -o /out
