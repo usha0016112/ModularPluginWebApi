@@ -1,20 +1,18 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+var builder = WebApplication.CreateBuilder(args);
 
-COPY ModularPluginWebApi/ModularPluginWebApi.csproj ModularPluginWebApi/
-COPY Plugin.Abstractions/Plugin.Abstractions.csproj Plugin.Abstractions/
-COPY SamplePlugin/SamplePlugin.csproj SamplePlugin/
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-RUN dotnet restore ModularPluginWebApi/ModularPluginWebApi.csproj
+var app = builder.Build();
 
-COPY . .
-RUN dotnet publish ModularPluginWebApi/ModularPluginWebApi.csproj -c Release -o /out
+app.UseSwagger();
+app.UseSwaggerUI();
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /app
-COPY --from=build /out .
+app.MapControllers();
 
-ENV ASPNETCORE_URLS=http://+:10000
-EXPOSE 10000
+// 👇 Add this line
+app.MapGet("/", () => "API is running successfully 🚀");
 
-ENTRYPOINT ["dotnet", "ModularPluginWebApi.dll"]
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Run($"http://0.0.0.0:{port}");
