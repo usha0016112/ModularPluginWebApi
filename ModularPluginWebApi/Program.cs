@@ -11,6 +11,8 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 
-// 🔥 Important for Render
+// 👇 ADD THIS LINE
+app.MapGet("/", () => "API is running successfully 🚀");
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 app.Run($"http://0.0.0.0:{port}");
