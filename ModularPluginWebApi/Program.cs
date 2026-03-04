@@ -11,4 +11,6 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 
-app.Run();
+// 🔥 Important for Render
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Run($"http://0.0.0.0:{port}");
