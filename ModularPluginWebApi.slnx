@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ModularPluginWebApi/ModularPluginWebApi.csproj" />
+  <Project Path="Plugin.Abstractions/Plugin.Abstractions.csproj" />
+  <Project Path="SamplePlugin/SamplePlugin.csproj" />
+</Solution>
