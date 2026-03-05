@@ -12,12 +12,13 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModularPluginWebApi v1");
 
-    // index.html maintain panna
+    // Swagger page open aagura URL
     c.RoutePrefix = "index";
 
-    // click panna URL update aagum
+    // Section click panna URL change aagum
     c.EnableDeepLinking();
 });
 
 app.MapControllers();
+
 app.Run();
