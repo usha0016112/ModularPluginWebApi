@@ -7,11 +7,17 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModularPluginWebApi v1");
+
+    // index.html maintain panna
+    c.RoutePrefix = "index";
+
+    // click panna URL update aagum
+    c.EnableDeepLinking();
+});
 
 app.MapControllers();
-
-app.MapGet("/", () => "API is running successfully 🚀");
-
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-app.Run($"http://0.0.0.0:{port}");
+app.Run();
