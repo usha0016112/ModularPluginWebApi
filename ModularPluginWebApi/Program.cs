@@ -36,7 +36,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ModularPluginWebApi", Version = "v1" });
 
-    // 🔐 Add JWT support in Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Enter: Bearer {your token}",
@@ -66,17 +65,23 @@ var app = builder.Build();
 
 // Swagger
 app.UseSwagger();
+
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModularPluginWebApi v1");
-    c.RoutePrefix = "index"; // URL: /index
-    c.EnableDeepLinking();   // #extra, #users
+
+    // 👉 URL: /index
+    c.RoutePrefix = "index";
+
+    // 👉 #extra, #users
+    c.EnableDeepLinking();
 });
 
-// 🔐 IMPORTANT
+// 🔐 Authentication
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Controllers
 app.MapControllers();
 
 app.Run();
