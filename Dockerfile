@@ -1,23 +1,18 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
-COPY ModularPluginWebApi/ModularPluginWebApi.csproj ModularPluginWebApi/
-COPY Plugin.Abstractions/Plugin.Abstractions.csproj Plugin.Abstractions/
-COPY SamplePlugin/SamplePlugin.csproj SamplePlugin/
+COPY . ./
+RUN dotnet restore
+RUN dotnet publish -c Release -o out
 
-RUN dotnet restore ModularPluginWebApi/ModularPluginWebApi.csproj
-
-COPY . .
-RUN dotnet publish ModularPluginWebApi/ModularPluginWebApi.csproj -c Release -o /out
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
-COPY --from=build /out .
+
+COPY --from=build /app/out .
 
 ENV ASPNETCORE_URLS=http://+:10000
 EXPOSE 10000
-<<<<<<< HEAD
-=======
 
 ENTRYPOINT ["dotnet", "ModularPluginWebApi.dll"]
->>>>>>> 89eca64afd945a7dc96cf8a31b6cb68b475f4e56
