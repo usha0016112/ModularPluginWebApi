@@ -1,23 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ModularPluginWebApi.Controllers
 {
-    [Authorize] // 🔐 Secure pannum
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class PluginController : ControllerBase
     {
         [HttpGet]
         public IActionResult GetPlugins()
         {
-            var plugins = new List<string>
-            {
-                "Plugin1",
-                "Plugin2"
-            };
-
-            return Ok(plugins);
+            return Ok(new string[] { "Plugin1", "Plugin2" });
         }
     }
 }
