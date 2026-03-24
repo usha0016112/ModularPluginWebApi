@@ -31,7 +31,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// 📄 Swagger + Authorize button
+// 🧾 Swagger + Authorize button
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ModularPluginWebApi", Version = "v1" });
@@ -45,7 +45,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
         {
             new OpenApiSecurityScheme
@@ -65,23 +65,17 @@ var app = builder.Build();
 
 // Swagger
 app.UseSwagger();
-
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModularPluginWebApi v1");
-
-    // 👉 URL: /index
-    c.RoutePrefix = "index";
-
-    // 👉 #extra, #users
+    c.RoutePrefix = "index"; // 👉 IMPORTANT
     c.EnableDeepLinking();
 });
 
-// 🔐 Authentication
+// 🔐 Enable Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Controllers
 app.MapControllers();
 
 app.Run();
