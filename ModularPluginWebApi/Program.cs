@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,27 +31,29 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// 🔐 Swagger Authorize button
+// 📄 Swagger + Authorize button
 builder.Services.AddSwaggerGen(c =>
 {
-    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ModularPluginWebApi", Version = "v1" });
+
+    // 🔐 Add JWT support in Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
+        Description = "Enter: Bearer {your token}",
         Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Enter: Bearer {token}"
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
 
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            new OpenApiSecurityScheme
             {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                Reference = new OpenApiReference
                 {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 }
             },
@@ -61,13 +64,13 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Swagger
 app.UseSwagger();
-
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModularPluginWebApi v1");
-    c.RoutePrefix = "index";
-    c.EnableDeepLinking();
+    c.RoutePrefix = "index"; // URL: /index
+    c.EnableDeepLinking();   // #extra, #users
 });
 
 // 🔐 IMPORTANT
