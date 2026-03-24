@@ -12,7 +12,7 @@ var key = Encoding.ASCII.GetBytes("my_super_secret_key_12345");
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// 🔐 JWT Authentication
+// JWT Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -31,14 +31,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// 🧾 Swagger + Authorize button
+// Swagger + Auth
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ModularPluginWebApi", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Enter: Bearer {your token}",
+        Description = "Enter: Bearer {token}",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey
@@ -62,23 +62,21 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// ✅ Swagger enable
+// Swagger
 app.UseSwagger();
-
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModularPluginWebApi v1");
-
-    // 🔥 IMPORTANT (THIS FIXES YOUR ISSUE)
-    c.RoutePrefix = "index";   // 👉 URL: /index
-
+    c.RoutePrefix = "index"; // 👉 IMPORTANT
     c.EnableDeepLinking();
 });
 
-// 🔐 Enable Auth
+// Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+// Render fix
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://0.0.0.0:{port}");

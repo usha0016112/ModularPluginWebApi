@@ -16,3 +16,8 @@ COPY --from=build /out .
 
 ENV ASPNETCORE_URLS=http://+:10000
 EXPOSE 10000
+<<<<<<< HEAD
+=======
+
+ENTRYPOINT ["dotnet", "ModularPluginWebApi.dll"]
+>>>>>>> 89eca64afd945a7dc96cf8a31b6cb68b475f4e56
