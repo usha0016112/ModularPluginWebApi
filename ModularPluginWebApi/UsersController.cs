@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ModularPluginWebApi.Controllers
+[ApiController]
+[Route("api/[controller]")]
+[Authorize] // 🔐 IMPORTANT
+public class UsersController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class UsersController : ControllerBase
+    [HttpGet("getusers")]
+    public IActionResult GetUsers()
     {
-        [HttpGet("getusers")]
-        public IActionResult GetUsers()
-        {
-            return Ok(new string[] { "User1", "User2", "User3" });
-        }
+        return Ok(new { users = new[] { "User1", "User2" } });
     }
 }

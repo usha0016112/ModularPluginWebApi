@@ -13,6 +13,7 @@ namespace ModularPluginWebApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
+            // 🔐 Username + Password check
             if (model.Username == "admin" && model.Password == "1234")
             {
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my_super_secret_key_12345"));
@@ -21,7 +22,8 @@ namespace ModularPluginWebApi.Controllers
                 var token = new JwtSecurityToken(
                     claims: new[] { new Claim(ClaimTypes.Name, model.Username) },
                     expires: DateTime.Now.AddHours(1),
-                    signingCredentials: creds);
+                    signingCredentials: creds
+                );
 
                 return Ok(new
                 {
@@ -29,7 +31,7 @@ namespace ModularPluginWebApi.Controllers
                 });
             }
 
-            return Unauthorized();
+            return Unauthorized("Invalid username or password");
         }
     }
 

@@ -5,13 +5,13 @@ namespace ModularPluginWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize] // 🔐 protected
     public class PluginController : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetPlugins()
+        public IActionResult Get()
         {
-            return Ok(new string[] { "Plugin1", "Plugin2" });
+            return Ok("Plugin data secured 🔐");
         }
     }
 }

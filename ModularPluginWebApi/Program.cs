@@ -41,11 +41,10 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Enter: Bearer {your token}",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Type = SecuritySchemeType.ApiKey
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -63,12 +62,16 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Swagger
+// ✅ Swagger enable
 app.UseSwagger();
+
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ModularPluginWebApi v1");
-    c.RoutePrefix = "index"; // 👉 IMPORTANT
+
+    // 🔥 IMPORTANT (THIS FIXES YOUR ISSUE)
+    c.RoutePrefix = "index";   // 👉 URL: /index
+
     c.EnableDeepLinking();
 });
 
