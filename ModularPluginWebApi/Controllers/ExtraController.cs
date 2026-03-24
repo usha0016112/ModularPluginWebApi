@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ModularPluginWebApi.Controllers
 {
+    [Authorize] // 🔐 Secure pannum
     [ApiController]
     [Route("api/[controller]")]
     public class ExtraController : ControllerBase
@@ -15,7 +17,7 @@ namespace ModularPluginWebApi.Controllers
         [HttpGet("status")]
         public IActionResult Status()
         {
-            return Ok("Application is running...");
+            return Ok("Extra API running (secured)");
         }
     }
 }

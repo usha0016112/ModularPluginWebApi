@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ModularPluginWebApi.Controllers
 {
+    [Authorize] // 🔐 Secure pannum
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
@@ -9,13 +11,20 @@ namespace ModularPluginWebApi.Controllers
         [HttpGet("getusers")]
         public IActionResult GetUsers()
         {
-            var users = new List<object>
+            var users = new List<string>
             {
-                new { Id = 1, Name = "Naveen" },
-                new { Id = 2, Name = "Praveen" }
+                "Naveen",
+                "Kumar",
+                "Arun"
             };
 
             return Ok(users);
+        }
+
+        [HttpGet("status")]
+        public IActionResult Status()
+        {
+            return Ok("Users API working (secured)");
         }
     }
 }

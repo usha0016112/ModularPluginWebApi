@@ -1,45 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Plugin.Abstractions;
-using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ModularPluginWebApi.Controllers
 {
+    [Authorize] // 🔐 Secure pannum
     [ApiController]
     [Route("api/[controller]")]
     public class PluginController : ControllerBase
     {
-        private static List<IPlugin> _plugins = new List<IPlugin>();
-
-        static PluginController()
-        {
-            var pluginPath = Path.Combine(Directory.GetCurrentDirectory(), "Plugins");
-
-            if (Directory.Exists(pluginPath))
-            {
-                foreach (var file in Directory.GetFiles(pluginPath, "*.dll"))
-                {
-                    var assembly = Assembly.LoadFrom(file);
-
-                    var types = assembly.GetTypes()
-                        .Where(t => typeof(IPlugin).IsAssignableFrom(t) && !t.IsInterface);
-
-                    foreach (var type in types)
-                    {
-                        var plugin = (IPlugin)Activator.CreateInstance(type);
-                        _plugins.Add(plugin);
-                    }
-                }
-            }
-        }
-
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetPlugins()
         {
-            return Ok(_plugins.Select(p => new
+            var plugins = new List<string>
             {
-                Name = p.Name,
-                Result = p.Execute()
-            }));
+                "Plugin1",
+                "Plugin2"
+            };
+
+            return Ok(plugins);
         }
     }
 }
