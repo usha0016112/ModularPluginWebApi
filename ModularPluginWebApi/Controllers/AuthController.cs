@@ -8,36 +8,28 @@ namespace ModularPluginWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class LoginController : ControllerBase
     {
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel model)
+        public IActionResult Login([FromQuery] string username, [FromQuery] string password)
         {
-            // 🔐 Username + Password check
-            if (model.Username == "admin" && model.Password == "1234")
+            if (username == "admin" && password == "1234")
             {
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my_super_secret_key_12345"));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
-                    claims: new[] { new Claim(ClaimTypes.Name, model.Username) },
+                    claims: new[] { new Claim(ClaimTypes.Name, username) },
                     expires: DateTime.Now.AddHours(1),
                     signingCredentials: creds
                 );
 
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token)
-                });
+                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return Ok(new { token = jwt });
             }
 
-            return Unauthorized("Invalid username or password");
+            return Unauthorized("Invalid username/password");
         }
-    }
-
-    public class LoginModel
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
     }
 }

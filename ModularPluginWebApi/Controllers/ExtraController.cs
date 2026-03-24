@@ -1,23 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ModularPluginWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // 🔐 login illama access panna mudiyadhu
-    public class ExtraController : ControllerBase
+    [Authorize]   // 🔐 IMPORTANT
+    public class UsersController : ControllerBase
     {
-        [HttpGet("hello")]
-        public IActionResult Hello()
+        [HttpGet("getusers")]
+        public IActionResult GetUsers()
         {
-            return Ok("Hello from Extra Controller 🔥");
-        }
-
-        [HttpGet("status")]
-        public IActionResult Status()
-        {
-            return Ok("Application is running 🚀");
+            return Ok(new { message = "Authorized users data" });
         }
     }
 }

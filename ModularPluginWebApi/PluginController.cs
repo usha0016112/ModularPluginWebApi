@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ModularPluginWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // 🔐 protected
+    [Authorize]   // 🔐 IMPORTANT
     public class PluginController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetPlugins()
         {
-            return Ok("Plugin data secured 🔐");
+            return Ok(new { message = "Plugins loaded successfully" });
         }
     }
 }
