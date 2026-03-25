@@ -9,6 +9,7 @@ namespace ModularPluginWebApi.Controllers
     [Authorize]
     public class UsersController : ControllerBase
     {
+        // GET: api/users/getusers
         [HttpGet("getusers")]
         public IActionResult GetUsers()
         {
