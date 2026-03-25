@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ModularPluginWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]   // 🔐 IMPORTANT
-    public class UsersController : ControllerBase
+    public class ExtraController : ControllerBase
     {
-        [HttpGet("getusers")]
-        public IActionResult GetUsers()
+        [HttpGet]
+        public IActionResult Test()
         {
-            return Ok(new { message = "Authorized users data" });
+            return Ok("Extra controller working");
         }
     }
 }
